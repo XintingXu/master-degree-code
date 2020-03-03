@@ -1,0 +1,11 @@
+{
+    "hostname": "192.168.0.108",
+    "username": "xuxinting",
+    "password": "xuxinting",
+    "databases": {
+        "source": "source",
+        "modulation": "modulation",
+        "distribution": "distribution",
+        "evaluation": "evaluation"
+    }
+}

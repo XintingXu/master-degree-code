@@ -1,0 +1,12 @@
+{
+	"database_source": "source", 
+	"tablename_captured": "captured", 
+	"tablename_parameters": "parameters", 
+	"tablename_data": "data", 
+	"database_modulation": "modulation", 
+	"TYPE": "3", 
+	"THREADS": "4",
+	"DEBUG": "0",
+	"HASHSALT": "aa123",
+	"RANDOMSALT": "12398"
+}

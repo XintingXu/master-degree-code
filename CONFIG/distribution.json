@@ -1,0 +1,11 @@
+{
+	"database_source": "source", 
+	"tablename_captured": "captured", 
+	"database_modulation": "modulation", 
+	"database_distribution": "distribution", 
+	"TYPE": "3", 
+	"THREADS": "4", 
+	"WIN_BEGIN": "100", 
+	"WIN_END": "1000", 
+	"WIN_STEP": "100"
+}
