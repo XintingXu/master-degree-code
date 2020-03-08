@@ -1,7 +1,11 @@
 build*
 *.exe
 *.user
-5-Calculation-Distribution-Quantification-Python/_pycache_/*
-5-Calculation-Distribution-Quantification-Python/_pycache_
+5-Calculation-Distribution-Quantification-Python/__pycache__/*
+5-Calculation-Distribution-Quantification-Python/__pycache__
 5-Calculation-Distribution-Quantification-Python/.idea/*
 5-Calculation-Distribution-Quantification-Python/.idea
+5-Calculation-FFT/*.png
+5-Calculation-FFT/__pycache__/*
+5-Calculation-FFT/__pycache__
+5-Calculation-FFT/.idea
