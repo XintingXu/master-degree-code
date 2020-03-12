@@ -4,7 +4,6 @@
 #include <QDebug>
 #include <QSqlError>
 #include <QSqlQuery>
-#include <QRandomGenerator>
 #include <QDateTime>
 #include <QThread>
 #include <QMap>

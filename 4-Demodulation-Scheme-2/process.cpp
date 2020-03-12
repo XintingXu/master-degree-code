@@ -3,7 +3,6 @@
 #include <QDebug>
 #include <QSqlError>
 #include <QSqlQuery>
-#include <QRandomGenerator>
 #include <QDateTime>
 #include <QThread>
 #include <QMap>
@@ -375,14 +374,14 @@ void checkXOR(QList< QList< QList<int> > > *source, QList< QList< QList<int> > >
 // eliminate random offset, and change to codeword(integer start from 0)
 void eliminateRandomOffsetToCodeword(QList< QList< QList<int> > > &source, int random_seed, int Lcodeword) {
     // Step a. init the random generator, the seed is composed of salt and extracted seed
-    QRandomGenerator rand(quint32(random_seed) | quint32(g_randomSalt));
+    qsrand(quint32(random_seed) | quint32(g_randomSalt));
     int symbolMax = 1 << Lcodeword;
 
     // Step b. loop for each matrix
     for (auto index = 0 ; index < source.size() ; ++ index) {
         // Step c. loop for each group
         for (int group = 0 ; group < source[index].size() ; ++ group) {
-            int offset = rand.bounded(4096, 8192);
+            int offset = 4096 + qrand() % 4096;
 
             // Step d. eliminate for each sequence number
             for (int item = 0 ; item < source[index][group].size() ; ++ item) {
@@ -771,54 +770,54 @@ QString demodulation(int sourceID, int dataID, int Lcodeword, int Lhash, int Lcr
     // Step 2. seperate the sequence numbers into matrixs
     QList< QList<int> > relative_sequence_numbers;
     std::sort(dropout_sequence_numbers->begin(), dropout_sequence_numbers->end());
-    assert(dropout_sequence_numbers->length());
+    Q_ASSERT(dropout_sequence_numbers->length());
     seperateSequenceNumbersMatrix(dropout_sequence_numbers, relative_sequence_numbers, Lcodeword, Mcols);
 
     // Step 3. seperate the relative sequence numbers into each group
     QList< QList< int > > symbols_in_each_group;
-    assert(relative_sequence_numbers.size());
+    Q_ASSERT(relative_sequence_numbers.size());
     seperateMatrixToGroups(&relative_sequence_numbers, symbols_in_each_group, Mcols);
     relative_sequence_numbers.clear();
 
     // Step 4. rearrange the groups for the matrix
     QList< QList< QList<int> > > symbols_for_xor_verification;
-    assert(symbols_in_each_group.size());
+    Q_ASSERT(symbols_in_each_group.size());
     seperateGroupsForXor(&symbols_in_each_group, symbols_for_xor_verification);
     symbols_in_each_group.clear();
 
     // Step 5. verify XOR results after 2 message groups
     QList< QList< QList<int> > > symbols_group_xored;
-    assert(symbols_for_xor_verification.size());
+    Q_ASSERT(symbols_for_xor_verification.size());
     checkXOR(&symbols_for_xor_verification, symbols_group_xored, Lcodeword);
     symbols_for_xor_verification.clear();
 
     // Step 6. eliminate random offset, change to codeword
-    assert(symbols_group_xored.size());
+    Q_ASSERT(symbols_group_xored.size());
     eliminateRandomOffsetToCodeword(symbols_group_xored, g_captureSSRC[sourceID], Lcodeword);
 
     // Step 7. check CRC verification for codewords
     QList< QList<int> > codewords_after_crc;
-    assert(symbols_group_xored.size());
+    Q_ASSERT(symbols_group_xored.size());
     verifyCodewordCRC(&symbols_group_xored, codewords_after_crc, Lcrc, Lcodeword);
     symbols_group_xored.clear();
 
     // Step 8. regroup codewords for hash verification
     QList< QList< QList<int> > > codewords_group_r;
-    assert(codewords_after_crc.size());
+    Q_ASSERT(codewords_after_crc.size());
     rearrangeForR(&codewords_after_crc, codewords_group_r, R);
     codewords_after_crc.clear();
 
     // Step 9. verify hash sections, select 1 as final result
     QList<int> verified_codewords;
-    assert(codewords_group_r.size());
+    Q_ASSERT(codewords_group_r.size());
     verifyHashSection(&codewords_group_r, verified_codewords, Lhash, Lcodeword - Lcrc, R);
     codewords_group_r.clear();
 
     // Step 10. assemble covert message
-    assert(verified_codewords.size());
+    Q_ASSERT(verified_codewords.size());
     assembleCovertMessage(&verified_codewords, demodulated, Lcodeword - Lhash - Lcrc);
     verified_codewords.clear();
-    assert(sent_bits <= demodulated.length());
+    Q_ASSERT(sent_bits <= demodulated.length());
 
     // Step 11. calculate error bits
     while (sent_bits < demodulated.length()) {

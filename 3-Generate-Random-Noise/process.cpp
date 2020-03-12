@@ -3,7 +3,6 @@
 #include <QDebug>
 #include <QSqlError>
 #include <QSqlQuery>
-#include <QRandomGenerator>
 #include <QDateTime>
 #include <QThread>
 #include <QMap>
@@ -66,12 +65,11 @@ void ProcessOperation::processAction(QList<QString> *tables) {
         for (int i = 0 ; i < this->parameter["REPEAT"].toInt() ; ++i) {
             QList<int> result_list;
 
-            QRandomGenerator rand(static_cast<quint32>(QDateTime::currentDateTime().currentMSecsSinceEpoch()));
+            qsrand(static_cast<quint32>(QDateTime::currentDateTime().currentMSecsSinceEpoch()));
             for (int j = 0 ; j < roundThousand ; ++j) {
                 QSet<int> deduplicate;
-
                 while(deduplicate.size() < dropPerThousand) {
-                    int item = rand.bounded(randBegin, randFragment) + j * randFragment;
+                    int item = randBegin + qrand() % (randFragment - randBegin) + j * randFragment;
                     if (deduplicate.find(item) == deduplicate.end()) {
                         deduplicate.insert(item);
                         result_list.push_back(item);
@@ -96,7 +94,7 @@ void ProcessOperation::processAction(QList<QString> *tables) {
                                   "VALUES('%3', '%4', '%5', '%6', '%7')").arg(
                         this->parameter["database"]).arg(this->parameter["tablename"]).arg(
                         this->parameter["TYPE"]).arg(roundThousand * randFragment).arg(info).arg(
-                        rand.bounded(1000000000, 2147483647)).arg(drop);
+                        1000000000 + qrand() % (2147483647 - 1000000000)).arg(drop);
 
             if (!sql->exec(sql_cmd)) {
                 logQueryError(sql);

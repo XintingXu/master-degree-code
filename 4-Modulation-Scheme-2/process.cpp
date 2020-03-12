@@ -3,7 +3,6 @@
 #include <QDebug>
 #include <QSqlError>
 #include <QSqlQuery>
-#include <QRandomGenerator>
 #include <QDateTime>
 #include <QThread>
 #include <QMap>
@@ -249,7 +248,7 @@ void appendHashSections(QList<QString> *source, int Lhash, int R, QList< QList<Q
 
         if (isDEBUG) {
             log = QString("group[%1] \t HASH(%2) = [(%3)16, (%4)2]").arg(i).arg(
-                        tempStr).arg(subResult).arg(append_result);
+                        tempStr).arg(subResult.toString()).arg(append_result);
             ProcessOperation::logToFile(&log);
         }
     }
@@ -290,7 +289,7 @@ void appendRVerifications(QList< QList<QString> > &source, int length) {
 
         if (isDEBUG) {
             QString log = QString("R for Group[%1]: \t hash(%2) = (%3)16, (%4)2").arg(group).arg(
-                        dataSpilice).arg(subResult).arg(append_result);
+                        dataSpilice).arg(subResult.toString()).arg(append_result);
             ProcessOperation::logToFile(&log);
         }
     }
@@ -340,7 +339,7 @@ void appendCRCSections(QList<QString> &source, int Lcrc) {
 
         if (isDEBUG) {
             QString log = QString("codeword[%1]: \tCRC(%2) = (%3)16, (%4)2").arg(
-                        group).arg(*codeword).arg(subResult).arg(append_result);
+                        group).arg(*codeword).arg(subResult.toString()).arg(append_result);
             ProcessOperation::logToFile(&log);
         }
 
@@ -375,7 +374,7 @@ void changeBinaryToNumbers(QList<QString> *source, QList<int> &result) {
 void introduceRandomOffset(QList<int> &source, int random_seed, int Lcodeword) {
 
     // Step a. init the random generator, the seed is composed of salt and extracted seed
-    QRandomGenerator rand(quint32(random_seed) | quint32(g_randomSalt));
+    qsrand(quint32(random_seed) | quint32(g_randomSalt));
     int symbolMax = 1 << Lcodeword;
 
     // Step b. loop for each symbol
@@ -383,7 +382,7 @@ void introduceRandomOffset(QList<int> &source, int random_seed, int Lcodeword) {
     for (auto symbol = source.begin() ; symbol != source.end() ; ++ symbol, ++ group) {
 
         // Step c. add random offset
-        int offset = rand.bounded(4096, 8192);
+        int offset = 4096 + qrand() % 4096;
         int symbol_with_offset = ((*symbol - 1) + offset) % symbolMax + 1;
 
         if (isDEBUG) {
@@ -488,48 +487,48 @@ QString modulation(int source_id, int data_id, int Lcodeword, int Lhash, int Lcr
     // Step 1. split the covert message, into data blocks
     sent_bits = (max_covert_groups - verification_periods) * (Lcodeword - Lcrc - Lhash);
     QList<QString> covert_message_binary_strs;
-    assert(Lcodeword - Lhash - Lcrc > 0 && verification_periods != 0);
+    Q_ASSERT(Lcodeword - Lhash - Lcrc > 0 && verification_periods != 0);
     dataSpilit(data_id, Lcodeword - Lhash - Lcrc, max_covert_groups - verification_periods, covert_message_binary_strs);
 
     // Step 2. append the HASH sectionn into the binary string
     QList< QList<QString> > group_message_strs;
-    assert(covert_message_binary_strs.size());
+    Q_ASSERT(covert_message_binary_strs.size());
     appendHashSections(&covert_message_binary_strs, Lhash, R, group_message_strs);
     covert_message_binary_strs.clear();
 
     // Step 3. generate the binary string of R groups
-    assert(group_message_strs.size());
+    Q_ASSERT(group_message_strs.size());
     appendRVerifications(group_message_strs, Lcodeword - Lcrc);
 
     // Step 4. change 2-D to 1-D
     QList<QString> codeword_strs;
-    assert(group_message_strs.size());
+    Q_ASSERT(group_message_strs.size());
     changeArraytoList(&group_message_strs, codeword_strs, max_covert_groups);
     group_message_strs.clear();
 
     // Step 5. append the CRC section into the binary string
-    assert(codeword_strs.size());
+    Q_ASSERT(codeword_strs.size());
     appendCRCSections(codeword_strs, Lcrc);
 
     // Step 6. change the binary string(start from 0) into symbols(start from 1)
     QList<int> group_symbols;
-    assert(codeword_strs.size());
+    Q_ASSERT(codeword_strs.size());
     changeBinaryToNumbers(&codeword_strs, group_symbols);
     group_message_strs.clear();
 
     // Step 7. introduce random offset to each group
-    assert(group_symbols.size());
+    Q_ASSERT(group_symbols.size());
     introduceRandomOffset(group_symbols, g_captureSSRC[source_id], Lcodeword);
 
     // Step 8. add xor verification to Mcols in the matrix
     QList<int> group_symbols_with_xor;
-    assert(group_symbols.size());
+    Q_ASSERT(group_symbols.size());
     appendXorVerification(&group_symbols, group_symbols_with_xor);
     group_symbols.clear();
 
     // Step 9. map the symbols into sequence numbers
     QList<int> dropoutSequenceNumbers;
-    assert(group_symbols_with_xor.size());
+    Q_ASSERT(group_symbols_with_xor.size());
     mapGroupSymbolsToSequenceNumbers(&group_symbols_with_xor, dropoutSequenceNumbers, Lcodeword, Mcols);
     std::sort(dropoutSequenceNumbers.begin(), dropoutSequenceNumbers.end());
     group_symbols_with_xor.clear();

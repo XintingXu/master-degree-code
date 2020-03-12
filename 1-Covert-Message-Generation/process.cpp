@@ -3,7 +3,6 @@
 #include <QDebug>
 #include <QSqlError>
 #include <QSqlQuery>
-#include <QRandomGenerator>
 #include <QDateTime>
 #include <QThread>
 
@@ -62,10 +61,11 @@ void ProcessOperation::processAction(QList<QString> *tables) {
 
     for (int i = 0 ; i < this->parameter["count"].toInt() ; ++i) {
         QString data = "";
-        QRandomGenerator gen(static_cast<quint32>(QDateTime::currentDateTime().currentMSecsSinceEpoch()));
+        //QRandomGenerator gen(static_cast<quint32>(QDateTime::currentDateTime().currentMSecsSinceEpoch()));
+        qsrand(static_cast<quint32>(QDateTime::currentDateTime().currentMSecsSinceEpoch()));
         int j = 0;
         while (j < this->parameter["length"].toInt()) {
-            quint32 number = gen.generate();
+            quint32 number = qrand();
             QString tempString = QString::number(number, 2);
             int remain = j + tempString.length() < this->parameter["length"].toInt() ?
                         tempString.length() : this->parameter["length"].toInt() - j;
