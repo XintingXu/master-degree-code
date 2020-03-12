@@ -15,6 +15,7 @@
 #include <QCryptographicHash>
 #include <QPoint>
 #include <QHash>
+#include <math.h>
 
 static QMap<int, QString> g_dataMap;
 static QMap<int, QList<int> > g_sourceMap;
@@ -176,7 +177,7 @@ QString generateChecksum(QList<int> *source, int Lcodeword, int &checksum) {
     QStringRef subResult(&hashResult, 8, sizeof(int) * 2 - 1);
     checksum = subResult.toInt(nullptr, 16) % (2 << (Lcodeword - 1));
 
-    QString log = QString("Checksum of (%1) = %2[%3];").arg(result).arg(checksum).arg(subResult);
+    QString log = QString("Checksum of (%1) = %2[%3];").arg(result).arg(checksum).arg(subResult.toString());
     if (isDebugging) {
         ProcessOperation::logToFile(&log);
     }
