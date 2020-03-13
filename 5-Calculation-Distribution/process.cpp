@@ -147,6 +147,7 @@ void appendIPDs(QList<int> *dropList, QMap<int, int> *reference, QMap<int, int> 
     int lastTimeStamp = 0;
     for (auto it = remainingPackets.begin() ; it != remainingPackets.end() ; ++it) {
         int ipd = it.value() - lastTimeStamp;
+        Q_ASSERT(ipd >= 0);
         if (result.find(ipd) == result.end()) {
             result[ipd] = 0;
         }
