@@ -23,7 +23,8 @@ enum PARAMETERS_TYPE {
     MODULATION,
     PARAMETERS_GENERATION,
     RANDOM_NOISE_GENERATION,
-    DISTRIBUTION_FEATURE
+    DISTRIBUTION_FEATURE,
+    SIMULATION
 };
 
 static QString database_fie("../CONFIG/database.json");
@@ -32,6 +33,7 @@ static QString modulation_file("../CONFIG/modulation.json");
 static QString parameters_file("../CONFIG/parameters.json");
 static QString noise_generation_file("../CONFIG/generatenoise.json");
 static QString distribution_feature_file("../CONFIG/distribution.json");
+static QString simulation_file("../CONFIG/simulation.json");
 
 static QString get_file_name(PARAMETERS_TYPE type) {
     switch(type) {
@@ -47,6 +49,8 @@ static QString get_file_name(PARAMETERS_TYPE type) {
             return noise_generation_file;
         case DISTRIBUTION_FEATURE:
             return distribution_feature_file;
+        case SIMULATION:
+            return simulation_file;
     }
     return QString("");
 }
@@ -57,6 +61,7 @@ bool praseCDF(QString cdfStr, QMap<int, double> &result);
 bool prasePMF(QString disStr, QMap<int, double> &result);
 
 bool praseIntCSVtoList(QString csvStr, QList<int> &result);
+bool praseIntListtoCSV(QList<int> *source, QString &result);
 
 template<typename T>
 QString praseMapToJSON(QMap<int, T> *source) {

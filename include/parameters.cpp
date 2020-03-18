@@ -200,3 +200,11 @@ bool praseIntCSVtoList(QString csvStr, QList<int> &result) {
 
     return true;
 }
+
+bool praseIntListtoCSV(QList<int> *source, QString &result) {
+    result.clear();
+
+    for (auto item : *source) {
+        result += QString("%1,").arg(item);
+    }
+}
