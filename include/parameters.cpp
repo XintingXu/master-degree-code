@@ -207,4 +207,6 @@ bool praseIntListtoCSV(QList<int> *source, QString &result) {
     for (auto item : *source) {
         result += QString("%1,").arg(item);
     }
+
+    return true;
 }
