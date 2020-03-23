@@ -309,6 +309,9 @@ void Task::run() {
             if (g_captureIDDropList.find(id) != g_captureIDDropList.end()) {
                 dropped += g_captureIDDropList[id];
                 QSet<int> uniqueDropped = QSet<int>::fromList(dropped);
+                if (uniqueDropped.contains(0)) {
+                    uniqueDropped.remove(0);
+                }
                 dropped = QList<int>::fromSet(uniqueDropped);
                 std::sort(dropped.begin(), dropped.end());
             }
