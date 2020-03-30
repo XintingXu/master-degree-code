@@ -181,6 +181,7 @@ bool praseDropList(QString dropListStr, QList<int> &result) {
     for (auto item : json_array) {
         result.push_back(item.toInt());
     }
+    std::sort(result.begin(), result.end());
     return true;
 }
 

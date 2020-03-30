@@ -4,8 +4,8 @@
 	"tablename_parameters": "parameters", 
 	"tablename_data": "data", 
 	"database_modulation": "modulation", 
-	"TYPE": "3", 
-	"THREADS": "1",
+	"TYPE": "4,5", 
+	"THREADS": "4",
 	"DEBUG": "0",
     "WINDOW": "10,20,50,100,250,500,1000"
 }

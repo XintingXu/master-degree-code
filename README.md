@@ -81,3 +81,15 @@
 
 ### 5-Calculation-Distribution-Quantification-Python
 Python项目，对调制前及调制后的分布，进行一致性假设检验、熵检验及距离检验
+
+### 5-Calculation-FFT
+FFT变换，测试丢包的分布是否存在特定的模式
+
+### 6-Simulation-Packet-Dropout
+按照固定的比例进行丢包，模拟时间隐通道的行为
+
+### 7-Generate-Sample-Combinations
+组合抓包结果，生成测试样本
+
+### 7-Calculation-Sample-Distribution
+统计样本中的分布特征，复用5-Calculation-Distribution中的部分代码
