@@ -76,8 +76,13 @@
 ### 4-Demodulation-Scheme-2
 第二种方案的解调过程
 
-### 5-Calculation-Distribution
+### 5-Calculation-Distribution-Sum
 根据统计设定，统计各分部的统计值、概率、累积分布
+同一source下的合并
+
+### 5-Calculation-Distribution-Each-Sample
+根据统计设定，统计各分部的统计值、概率、累积分布
+各调制结果独立一条
 
 ### 5-Calculation-Distribution-Quantification-Python
 Python项目，对调制前及调制后的分布，进行一致性假设检验、熵检验及距离检验
@@ -93,3 +98,6 @@ FFT变换，测试丢包的分布是否存在特定的模式
 
 ### 7-Calculation-Sample-Distribution
 统计样本中的分布特征，复用5-Calculation-Distribution中的部分代码
+
+### 8-Video-Quality-Python
+选择两个抓包样本，进行视频质量的评估
