@@ -13,3 +13,9 @@ build*
 7-Generate-Sample-Combinations/__pycache__
 7-Generate-Sample-Combinations/.idea/*
 7-Generate-Sample-Combinations/.idea
+8-Video-Quality-Python/*.pcap
+8-Video-Quality-Python/*.264
+8-Video-Quality-Python/.idea
+8-Video-Quality-Python/.idea/*
+8-Video-Quality-Python/__pycache__
+8-Video-Quality-Python/__pycache__/*
