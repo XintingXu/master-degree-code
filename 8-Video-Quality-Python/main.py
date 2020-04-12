@@ -88,7 +88,7 @@ if __name__ == '__main__':
         rtp2h264.write_into_file(reference_h264_file, reference_packet_list, [])
 
         niqe_str = list_to_csv(evaluation_h264(reference_h264_file))
-        sql = "INSERT INTO `evaluation`.`videoquality`(`SOURCEID`,`PARAID`,`PSNR`) VALUES('{0}','0','{1}')".format(
+        sql = "INSERT INTO `evaluation`.`videoquality`(`SOURCEID`,`PARAID`,`NIQE`) VALUES('{0}','0','{1}')".format(
             source, niqe_str
         )
         cursor_evaluation.execute(sql)
@@ -117,7 +117,7 @@ if __name__ == '__main__':
             rtp2h264.write_into_file(current_file_name, reference_packet_list, drop_list_int)
 
             niqe_str = list_to_csv(evaluation_h264(current_file_name))
-            sql = "INSERT INTO `evaluation`.`videoquality`(`SOURCEID`,`PARAID`,`PSNR`) VALUES('{0}','{1}','{2}')".format(
+            sql = "INSERT INTO `evaluation`.`videoquality`(`SOURCEID`,`PARAID`,`NIQE`) VALUES('{0}','{1}','{2}')".format(
                 source, para, niqe_str
             )
             cursor_evaluation.execute(sql)

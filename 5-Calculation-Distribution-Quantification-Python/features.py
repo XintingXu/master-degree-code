@@ -233,6 +233,12 @@ def features(parameters: dict, source_id: int):
             nonzero_currentWINCDF = pmf_to_list(currentWINCDF[index])
             aligned_WINCDF = align_pmf(nonzero_currentWINCDF, nonzero_referenceWINCDF)
             kld_win[index] = stats.entropy(aligned_WINCDF[0], aligned_WINCDF[1])
+
+            # nonzero_referenceWINPMF = pmf_to_list(referenceWINPMF[index])
+            # nonzero_currentWINPMF = pmf_to_list(currentWINPMF[index])
+            # aligned_WINPMF = align_pmf(nonzero_currentWINPMF, nonzero_referenceWINPMF)
+            # kld_win[index] = stats.entropy(aligned_WINPMF[0], aligned_WINPMF[1])
+
             # kld_win[index] = stats.entropy(cdf_to_list(referenceWINCDF[index]), cdf_to_list(currentWINCDF[index]))
             # wasserstein_win[index] = stats.wasserstein_distance(cdf_to_list(referenceWINCDF[index]), cdf_to_list(currentWINCDF[index]))
             # energy_win[index] = stats.energy_distance(cdf_to_list(referenceWINCDF[index]), cdf_to_list(currentWINCDF[index]))

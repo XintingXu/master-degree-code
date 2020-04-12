@@ -20,6 +20,10 @@ SOURCES += main.cpp \
     ../include/parameters.cpp \
     ../include/processoperation.cpp
 
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
 HEADERS += \
     ../include/parameters.h \
     ../include/processoperation.h
