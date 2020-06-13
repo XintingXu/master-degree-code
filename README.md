@@ -1,4 +1,4 @@
-# master-degree-paper
+# master-degree-code
 北京理工大学，计算机学院，徐欣廷，硕士毕业论文，实验部分需要的所有代码。
 
 ## 组成部分
